@@ -1,1 +1,3 @@
-jcssicon
+.icon-48-slides, .icon-48-slide {
+	background: url(../images/toolbar/slide.png) no-repeat left;
+}
