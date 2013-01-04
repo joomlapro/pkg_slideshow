@@ -149,7 +149,7 @@ class SlideshowModelSlides extends JModelList
 				', a.state, a.access, a.ordering, a.language, a.publish_up, a.publish_down'
 			)
 		);
-		$query->from($db->quoteName('#__{4slideshow') . ' AS a');
+		$query->from($db->quoteName('#__slideshow') . ' AS a');
 
 		// Join over the language
 		$query->select('l.title AS language_title');

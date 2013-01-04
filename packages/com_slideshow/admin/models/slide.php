@@ -243,7 +243,7 @@ class SlideshowModelSlide extends JModelAdmin
 			if (empty($table->ordering))
 			{
 				$db = JFactory::getDbo();
-				$db->setQuery('SELECT MAX(ordering) FROM #__{4slideshow');
+				$db->setQuery('SELECT MAX(ordering) FROM #__slideshow');
 				$max = $db->loadResult();
 
 				$table->ordering = $max + 1;

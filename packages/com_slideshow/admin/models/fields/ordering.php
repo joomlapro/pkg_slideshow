@@ -52,7 +52,7 @@ class JFormFieldOrdering extends JFormField
 
 		// Build the query for the ordering list.
 		$query = 'SELECT ordering AS value, title AS text' .
-				' FROM #__{4slideshow' .
+				' FROM #__slideshow' .
 				' WHERE catid = ' . (int) $categoryId .
 				' ORDER BY ordering';
 
