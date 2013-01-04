@@ -1,3 +1,17 @@
-.icon-48-slides, .icon-48-slide {
-	background: url(../images/toolbar/slide.png) no-repeat left;
+#jform_background_type label[for=jform_background_type0].active {
+	background-color: #F5F5F5;
+	color: #333;
+	text-shadow: none;
+}
+
+#jform_background_type label[for=jform_background_type1].active {
+	background-color: #363636;
+}
+
+#jform_background_type label[for=jform_background_type3].active {
+	background-color: #006DCC;
+}
+
+#jform_media_type label[for=jform_media_type0].active {
+	background-color: #006DCC;
 }

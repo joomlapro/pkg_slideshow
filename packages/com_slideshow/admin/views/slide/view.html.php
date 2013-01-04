@@ -6,19 +6,17 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-// No direct access
+// No direct access.
 defined('_JEXEC') or die;
-
-jimport('joomla.application.component.view');
 
 /**
  * View to edit a slide.
  *
  * @package     Slideshow
  * @subpackage  com_slideshow
- * @since       2.5
+ * @since       3.0
  */
-class SlideshowViewSlide extends JView
+class SlideshowViewSlide extends JViewLegacy
 {
 	protected $form;
 
@@ -27,13 +25,13 @@ class SlideshowViewSlide extends JView
 	protected $state;
 
 	/**
-	 * Execute and display a template script.
+	 * Method to display the view.
 	 *
-	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
+	 * @param   string  $tpl  A template file to load. [optional]
 	 *
 	 * @return  mixed  A string if successful, otherwise a JError object.
 	 *
-	 * @since   2.5
+	 * @since   3.0
 	 */
 	public function display($tpl = null)
 	{
@@ -49,63 +47,60 @@ class SlideshowViewSlide extends JView
 			return false;
 		}
 
-		// Load CSS
-		JHtml::stylesheet('com_slideshow/backend.css', false, true, false);
-
 		$this->addToolbar();
 
 		parent::display($tpl);
 	}
 
 	/**
-	 * Adds the page title and toolbar
+	 * Add the page title and toolbar.
 	 *
 	 * @return  void
 	 *
-	 * @since	2.5
+	 * @since   3.0
 	 */
 	protected function addToolbar()
 	{
-		JRequest::setVar('hidemainmenu', true);
+		JFactory::getApplication()->input->set('hidemainmenu', true);
 
-		$user	= JFactory::getUser();
-		$userId	= $user->get('id');
-		$isNew	= ($this->item->id == 0);
+		$user       = JFactory::getUser();
+		$userId     = $user->get('id');
+		$isNew      = ($this->item->id == 0);
 		$checkedOut = !($this->item->checked_out == 0 || $this->item->checked_out == $userId);
 
 		// Since we don't track these assets at the item level, use the category id.
-		$canDo	= SlideshowHelper::getActions($this->item->catid, 0);
+		$canDo      = SlideshowHelper::getActions($this->item->catid, 0);
 
-		JToolBarHelper::title($isNew ? JText::_('COM_SLIDESHOW_SLIDE_ADD') : JText::_('COM_SLIDESHOW_SLIDE_EDIT'), 'slide.png');
+		JToolbarHelper::title($isNew ? JText::_('COM_SLIDESHOW_MANAGER_SLIDE_NEW') : JText::_('COM_SLIDESHOW_MANAGER_SLIDE_EDIT'), 'slide.png');
 
 		// If not checked out, can save the item.
-		if (!$checkedOut && ($canDo->get('core.edit') || count($user->getAuthorisedCategories('com_slideshow', 'core.create')) > 0))
+		if (!$checkedOut && ($canDo->get('core.edit') || (count($user->getAuthorisedCategories('com_slideshow', 'core.create')))))
 		{
-			JToolBarHelper::apply('slide.apply');
-			JToolBarHelper::save('slide.save');
+			JToolbarHelper::apply('slide.apply');
+			JToolbarHelper::save('slide.save');
+		}
 
-			if ($canDo->get('core.create'))
-			{
-				JToolBarHelper::save2new('slide.save2new');
-			}
+		if (!$checkedOut && (count($user->getAuthorisedCategories('com_slideshow', 'core.create'))))
+		{
+			JToolbarHelper::save2new('slide.save2new');
 		}
 
 		// If an existing item, can save to a copy.
-		if (!$isNew && $canDo->get('core.create'))
+		if (!$isNew && (count($user->getAuthorisedCategories('com_slideshow', 'core.create')) > 0))
 		{
-			JToolBarHelper::save2copy('slide.save2copy');
+			JToolbarHelper::save2copy('slide.save2copy');
 		}
 
 		if (empty($this->item->id))
 		{
-			JToolBarHelper::cancel('slide.cancel');
+			JToolbarHelper::cancel('slide.cancel');
 		}
 		else
 		{
-			JToolBarHelper::cancel('slide.cancel', 'JTOOLBAR_CLOSE');
+			JToolbarHelper::cancel('slide.cancel', 'JTOOLBAR_CLOSE');
 		}
 
-		JToolBarHelper::divider();
+		JToolbarHelper::divider();
 		JToolBarHelper::help('slide', $com = true);
 	}
 }

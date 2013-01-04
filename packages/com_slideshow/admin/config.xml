@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <config>
+	<fieldset name="component" label="COM_SLIDESHOW_COMPONENT_LABEL" description="COM_SLIDESHOW_COMPONENT_DESC" addfieldpath="/administrator/components/com_slideshow/models/fields">
+
+	</fieldset>
 	<fieldset name="permissions" label="JCONFIG_PERMISSIONS_LABEL" description="JCONFIG_PERMISSIONS_DESC">
-		<field name="rules" type="rules" label="JCONFIG_PERMISSIONS_LABEL" class="inputbox" filter="rules" validate="rules" component="com_slideshow" section="component" />
+		<field name="rules" type="rules" label="JCONFIG_PERMISSIONS_LABEL" filter="rules" validate="rules" component="com_slideshow" section="component" />
 	</fieldset>
 </config>

@@ -6,17 +6,15 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-// No direct access
+// No direct access.
 defined('_JEXEC') or die;
 
-jimport('joomla.application.component.modellist');
-
 /**
- * Methods supporting a list of slides records.
+ * Methods supporting a list of slide records.
  *
  * @package     Slideshow
  * @subpackage  com_slideshow
- * @since       2.5
+ * @since       3.0
  */
 class SlideshowModelSlides extends JModelList
 {
@@ -26,8 +24,7 @@ class SlideshowModelSlides extends JModelList
 	 * @param   array  $config  An optional associative array of configuration settings.
 	 *
 	 * @see     JController
-	 *
-	 * @since   2.5
+	 * @since   3.0
 	 */
 	public function __construct($config = array())
 	{
@@ -37,13 +34,19 @@ class SlideshowModelSlides extends JModelList
 				'id', 'a.id',
 				'title', 'a.title',
 				'alias', 'a.alias',
-				'published', 'a.published',
+				'checked_out', 'a.checked_out',
+				'checked_out_time', 'a.checked_out_time',
 				'catid', 'a.catid', 'category_title',
-				'ordering', 'a.ordering',
+				'state', 'a.state',
 				'access', 'a.access', 'access_level',
 				'created', 'a.created',
 				'created_by', 'a.created_by',
+				'ordering', 'a.ordering',
+				'featured', 'a.featured',
 				'language', 'a.language',
+				'hits', 'a.hits',
+				'publish_up', 'a.publish_up',
+				'publish_down', 'a.publish_down',
 			);
 		}
 
@@ -58,17 +61,18 @@ class SlideshowModelSlides extends JModelList
 	 * @param   string  $ordering   An optional ordering field.
 	 * @param   string  $direction  An optional direction (asc|desc).
 	 *
-	 * @return	void
+	 * @return  void
 	 *
-	 * @since	2.5
+	 * @since   3.0
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
 		// Initialise variables.
 		$app = JFactory::getApplication('administrator');
+		$input = $app->input;
 
 		// Adjust the context to support modal layouts.
-		if ($layout = JRequest::getVar('layout'))
+		if ($layout = $input->get('layout'))
 		{
 			$this->context .= '.' . $layout;
 		}
@@ -80,10 +84,10 @@ class SlideshowModelSlides extends JModelList
 		$accessId = $this->getUserStateFromRequest($this->context . '.filter.access', 'filter_access', null, 'int');
 		$this->setState('filter.access', $accessId);
 
-		$published = $this->getUserStateFromRequest($this->context . '.filter.published', 'filter_published', '');
-		$this->setState('filter.published', $published);
+		$published = $this->getUserStateFromRequest($this->context . '.filter.state', 'filter_state', '', 'string');
+		$this->setState('filter.state', $published);
 
-		$categoryId = $this->getUserStateFromRequest($this->context . '.filter.category_id', 'filter_category_id');
+		$categoryId = $this->getUserStateFromRequest($this->context . '.filter.category_id', 'filter_category_id', '');
 		$this->setState('filter.category_id', $categoryId);
 
 		$language = $this->getUserStateFromRequest($this->context . '.filter.language', 'filter_language', '');
@@ -98,7 +102,7 @@ class SlideshowModelSlides extends JModelList
 	}
 
 	/**
-	 * Method to get a store id based on model configuration state.$
+	 * Method to get a store id based on model configuration state.
 	 *
 	 * This is necessary because the model is used by the component and
 	 * different modules that might need different sets of data or different
@@ -108,14 +112,14 @@ class SlideshowModelSlides extends JModelList
 	 *
 	 * @return  string  A store id.
 	 *
-	 * @since   2.5
+	 * @since   3.0
 	 */
 	protected function getStoreId($id = '')
 	{
 		// Compile the store id.
 		$id .= ':' . $this->getState('filter.search');
 		$id .= ':' . $this->getState('filter.access');
-		$id .= ':' . $this->getState('filter.published');
+		$id .= ':' . $this->getState('filter.state');
 		$id .= ':' . $this->getState('filter.category_id');
 		$id .= ':' . $this->getState('filter.language');
 
@@ -125,9 +129,9 @@ class SlideshowModelSlides extends JModelList
 	/**
 	 * Build an SQL query to load the list data.
 	 *
-	 * @return	JDatabaseQuery
+	 * @return  JDatabaseQuery
 	 *
-	 * @since	2.5
+	 * @since   3.0
 	 */
 	protected function getListQuery()
 	{
@@ -140,12 +144,12 @@ class SlideshowModelSlides extends JModelList
 		$query->select(
 			$this->getState(
 				'list.select',
-				'a.id, a.catid, a.title, a.alias, a.description'
-				. ', a.ordering, a.published, a.access, a.language, a.created, a.created_by, a.checked_out, a.checked_out_time'
-				. ', a.publish_up, a.publish_down'
+				'a.id, a.catid, a.title, a.alias, a.checked_out, a.checked_out_time' .
+				', a.hits' .
+				', a.state, a.access, a.ordering, a.language, a.publish_up, a.publish_down'
 			)
 		);
-		$query->from($db->quoteName('#__slideshow') . ' AS a');
+		$query->from($db->quoteName('#__atomtech_slideshow') . ' AS a');
 
 		// Join over the language
 		$query->select('l.title AS language_title');
@@ -172,36 +176,33 @@ class SlideshowModelSlides extends JModelList
 		// Implement View Level Access
 		if (!$user->authorise('core.admin'))
 		{
-			$groups = implode(',', $user->getAuthorisedViewLevels());
+			$groups = implode(', ', $user->getAuthorisedViewLevels());
 			$query->where('a.access IN (' . $groups . ')');
 		}
 
 		// Filter by published state
-		$published = $this->getState('filter.published');
+		$published = $this->getState('filter.state');
+
 		if (is_numeric($published))
 		{
-			$query->where('a.published = ' . (int) $published);
+			$query->where('a.state = ' . (int) $published);
 		}
 		elseif ($published === '')
 		{
-			$query->where('(a.published = 0 OR a.published = 1)');
+			$query->where('(a.state IN (0, 1))');
 		}
 
-		// Filter by a single or group of categories.
+		// Filter by category.
 		$categoryId = $this->getState('filter.category_id');
+
 		if (is_numeric($categoryId))
 		{
 			$query->where('a.catid = ' . (int) $categoryId);
 		}
-		elseif (is_array($categoryId))
-		{
-			JArrayHelper::toInteger($categoryId);
-			$categoryId = implode(',', $categoryId);
-			$query->where('a.catid IN (' . $categoryId . ')');
-		}
 
-		// Filter by search in title.
+		// Filter by search in title
 		$search = $this->getState('filter.search');
+
 		if (!empty($search))
 		{
 			if (stripos($search, 'id:') === 0)
@@ -222,10 +223,18 @@ class SlideshowModelSlides extends JModelList
 		}
 
 		// Add the list ordering clause.
-		$orderCol = $this->getState('list.ordering', 'a.title');
-		$query->order($db->escape($orderCol) . ' ' . $db->escape($this->getState('list.direction', 'ASC')));
+		$orderCol  = $this->state->get('list.ordering');
+		$orderDirn = $this->state->get('list.direction');
 
-		//echo nl2br(str_replace('#__', 'jos_', $query));
+		if ($orderCol == 'a.ordering' || $orderCol == 'category_title')
+		{
+			$orderCol = 'c.title ' . $orderDirn . ', a.ordering';
+		}
+
+		$query->order($db->escape($orderCol . ' ' . $orderDirn));
+
+		// echo nl2br(str_replace('#__', 'jos_',$query));
+
 		return $query;
 	}
 }

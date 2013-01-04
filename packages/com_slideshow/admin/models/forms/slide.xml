@@ -1,65 +1,96 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <form>
 	<fieldset name="details" addfieldpath="/administrator/components/com_slideshow/models/fields">
 		<field name="id" type="text" default="0" readonly="true" class="readonly" label="JGLOBAL_FIELD_ID_LABEL" description="JGLOBAL_FIELD_ID_DESC" />
-		<field name="title" type="text" class="inputbox" size="40" required="true" label="JGLOBAL_TITLE" description="JFIELD_TITLE_DESC" />
+		<field name="title" type="text" class="inputbox" required="true" size="40" label="JGLOBAL_TITLE" description="JFIELD_TITLE_DESC" />
 		<field name="alias" type="text" class="inputbox" size="40" label="JFIELD_ALIAS_LABEL" description="JFIELD_ALIAS_DESC" />
-		<field name="catid" type="categoryedit" extension="com_slideshow" class="inputbox" required="true" label="JCATEGORY" description="COM_SLIDESHOW_FIELD_CATEGORY_DESC" addfieldpath="/administrator/components/com_categories/models/fields">
+		<field name="catid" type="categoryedit" extension="com_slideshow" class="inputbox" required="true" addfieldpath="/administrator/components/com_categories/models/fields" label="JCATEGORY" description="JFIELD_CATEGORY_DESC">
 			<option value="">JSELECT</option>
 		</field>
-		<field name="type" type="radio" default="0" filter="integer" label="COM_SLIDESHOW_FIELD_TYPE_LABEL" description="COM_SLIDESHOW_FIELD_TYPE_DESC">
-			<option value="0">COM_SLIDESHOW_FIELD_OPTION_VIDEO</option>
-			<option value="1">COM_SLIDESHOW_FIELD_OPTION_INFOR</option>
-			<option value="2">COM_SLIDESHOW_FIELD_OPTION_BANNER</option>
+		<field name="background_type" type="radio" class="btn-group" default="0" filter="integer" label="COM_SLIDESHOW_FIELD_BACKGROUND_TYPE_LABEL" description="COM_SLIDESHOW_FIELD_BACKGROUND_TYPE_DESC">
+			<option value="0">COM_SLIDESHOW_OPTION_WHITE</option>
+			<option value="1">COM_SLIDESHOW_OPTION_DARK</option>
+			<option value="2">COM_SLIDESHOW_OPTION_BOOKS</option>
+			<option value="3">COM_SLIDESHOW_OPTION_CUSTOM</option>
 		</field>
-		<field name="video" type="url" class="inputbox" size="40" label="COM_SLIDESHOW_FIELD_VIDEO_LABEL" description="COM_SLIDESHOW_FIELD_VIDEO_DESC" />
-		<field name="image" type="media" directory="slideshow" size="40" label="COM_SLIDESHOW_FIELD_IMAGE_LABEL" description="COM_SLIDESHOW_FIELD_IMAGE_DESC" />
-		<field name="link" type="url" class="inputbox" size="40" label="COM_SLIDESHOW_FIELD_LINK_LABEL" description="COM_SLIDESHOW_FIELD_LINK_DESC" />
-		<field name="align" type="radio" default="0" filter="integer" label="COM_SLIDESHOW_FIELD_ALIGN_LABEL" description="COM_SLIDESHOW_FIELD_ALIGN_DESC">
-			<option value="0">JGLOBAL_LEFT</option>
-			<option value="1">JGLOBAL_RIGHT</option>
+		<field name="background" type="media" directory="slideshow" hide_none="1" size="40" label="COM_SLIDESHOW_FIELD_BACKGROUND_LABEL" description="COM_SLIDESHOW_FIELD_BACKGROUND_DESC" />
+		<field name="media_type" type="radio" class="btn-group" default="0" filter="integer" label="COM_SLIDESHOW_FIELD_MEDIA_TYPE_LABEL" description="COM_SLIDESHOW_FIELD_MEDIA_TYPE_DESC">
+			<option value="0">COM_SLIDESHOW_OPTION_IMAGE</option>
+			<option value="1">COM_SLIDESHOW_OPTION_VIDEO</option>
 		</field>
-		<field name="published" type="list" class="inputbox" size="1" default="1" label="JSTATUS" description="COM_SLIDESHOW_FIELD_STATE_DESC">
+		<field name="mediaimage" type="media" directory="slideshow" hide_none="1" size="40" label="COM_SLIDESHOW_FIELD_IMAGE_LABEL" description="COM_SLIDESHOW_FIELD_IMAGE_DESC" />
+		<field name="mediavideo" type="url" class="inputbox" filter="url" label="COM_SLIDESHOW_FIELD_VIDEO_LABEL" description="COM_SLIDESHOW_FIELD_VIDEO_DESC" />
+		<field name="link" type="url" class="inputbox" label="COM_SLIDESHOW_FIELD_LINK_LABEL" description="COM_SLIDESHOW_FIELD_LINK_DESC" />
+		<field name="button" type="text" class="inputbox" label="COM_SLIDESHOW_FIELD_BUTTON_LABEL" description="COM_SLIDESHOW_FIELD_BUTTON_DESC" />
+		<field name="ordering" type="ordering" class="inputbox" label="JFIELD_ORDERING_LABEL" description="JFIELD_ORDERING_DESC" />
+		<field name="description" type="editor" buttons="true" hide="pagebreak,readmore" class="inputbox" filter="JComponentHelper::filterText" label="JGLOBAL_DESCRIPTION" description="COM_SLIDESHOW_FIELD_DESCRIPTION_DESC" />
+		<field name="state" type="list" class="inputbox span12 small" size="1" default="1" label="JSTATUS" description="JFIELD_PUBLISHED_DESC">
 			<option value="1">JPUBLISHED</option>
 			<option value="0">JUNPUBLISHED</option>
 			<option value="2">JARCHIVED</option>
 			<option value="-2">JTRASHED</option>
 		</field>
-		<field name="access" type="accesslevel" class="inputbox" size="1" label="JFIELD_ACCESS_LABEL" description="JFIELD_ACCESS_DESC" />
-		<field name="hits" type="text" class="readonly" size="6" readonly="true" filter="unset" label="JGLOBAL_HITS" description="COM_SLIDESHOW_FIELD_HITS_DESC" />
-		<field name="ordering" type="ordering" class="inputbox" label="JFIELD_ORDERING_LABEL" description="JFIELD_ORDERING_DESC" />
-		<field name="language" type="contentlanguage" class="inputbox" label="JFIELD_LANGUAGE_LABEL" description="JFIELD_LANGUAGE_DESC">
+		<field name="access" type="accesslevel" class="inputbox span12 small" size="1" label="JFIELD_ACCESS_LABEL" description="JFIELD_ACCESS_DESC" />
+		<field name="featured" type="list" label="JFEATURED" description="COM_SLIDESHOW_FIELD_FEATURED_DESC" default="0" class="span12 small">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		<field name="language" type="contentlanguage" class="inputbox span12 small" label="JFIELD_LANGUAGE_LABEL" description="JFIELD_LANGUAGE_DESC">
 			<option value="*">JALL</option>
 		</field>
-		<field name="description" type="editor" class="inputbox" filter="JComponentHelper::filterText" buttons="true" hide="readmore,pagebreak" label="JGLOBAL_DESCRIPTION" description="COM_SLIDESHOW_FIELD_DESCRIPTION_DESC" />
+		<field name="metadesc" type="textarea" class="inputbox" rows="3" cols="30" label="JFIELD_META_DESCRIPTION_LABEL" description="JFIELD_META_DESCRIPTION_DESC" />
+		<field name="metakey" type="textarea" class="inputbox" rows="3" cols="30" label="JFIELD_META_KEYWORDS_LABEL" description="JFIELD_META_KEYWORDS_DESC" />
+		<field name="xreference" type="text" class="inputbox" size="20" labelclass="control-label" label="JFIELD_XREFERENCE_LABEL" description="JFIELD_XREFERENCE_DESC" />
+	</fieldset>
+	<fieldset name="publish" label="JGLOBAL_FIELDSET_PUBLISHING">
 		<field name="created" type="calendar" class="inputbox" size="22" format="%Y-%m-%d %H:%M:%S" filter="user_utc" label="JGLOBAL_FIELD_CREATED_LABEL" description="JGLOBAL_FIELD_CREATED_DESC" />
-		<field name="created_by" type="user" label="JGLOBAL_FIELD_CREATED_BY_LABEL" description="JGLOBAL_FIELD_CREATED_BY_DESC" />
+		<field name="created_by" type="user" label="JGLOBAL_FIELD_CREATED_BY_LABEL" description="JGLOBAL_FIELD_CREATED_BY_Desc" />
+		<field name="created_by_alias" type="text" class="inputbox" size="20" label="JGLOBAL_FIELD_CREATED_BY_ALIAS_LABEL" description="JGLOBAL_FIELD_CREATED_BY_ALIAS_DESC" />
 		<field name="modified" type="calendar" class="readonly" size="22" readonly="true" format="%Y-%m-%d %H:%M:%S" filter="user_utc" label="JGLOBAL_FIELD_MODIFIED_LABEL" description="COM_SLIDESHOW_FIELD_MODIFIED_DESC" />
-		<field name="modified_by" type="user" class="readonly" readonly="true" filter="unset" label="JGLOBAL_FIELD_MODIFIED_BY_LABEL" />
-		<field name="checked_out" type="Text" class="inputbox" size="6" label="JGLOBAL_FIELD_CHECKEDOUT_LABEL" description="JGLOBAL_FIELD_CHECKEDOUT_DESC" readonly="true" filter="unset" />
-		<field name="checked_out_time" type="Text" class="inputbox" size="6" readonly="true" filter="unset" label="JGLOBAL_FIELD_CHECKEDOUT_TIME_LABEL" description="JGLOBAL_FIELD_CHECKEDOUT_TIME_DESC" />
+		<field name="modified_by" type="user" class="readonly" readonly="true" filter="unset" label="JGLOBAL_FIELD_MODIFIED_BY_LABEL" description="COM_SLIDESHOW_FIELD_MODIFIED_BY_DESC" />
+		<field name="checked_out" type="hidden" filter="unset" />
+		<field name="checked_out_time" type="hidden" filter="unset" />
 		<field name="publish_up" type="calendar" class="inputbox" format="%Y-%m-%d %H:%M:%S" size="22" filter="user_utc" label="JGLOBAL_FIELD_PUBLISH_UP_LABEL" description="JGLOBAL_FIELD_PUBLISH_UP_DESC" />
 		<field name="publish_down" type="calendar" class="inputbox" format="%Y-%m-%d %H:%M:%S" size="22" filter="user_utc" label="JGLOBAL_FIELD_PUBLISH_DOWN_LABEL" description="JGLOBAL_FIELD_PUBLISH_DOWN_DESC" />
-		<field name="metakey" type="textarea" class="inputbox" rows="3" cols="30" label="JFIELD_META_KEYWORDS_LABEL" description="JFIELD_META_KEYWORDS_DESC" />
-		<field name="metadesc" type="textarea" class="inputbox" rows="3" cols="30" label="JFIELD_META_DESCRIPTION_LABEL" description="JFIELD_META_DESCRIPTION_DESC" />
-		<field name="xreference" type="text" class="inputbox" size="20" label="JFIELD_XREFERENCE_LABEL" description="JFIELD_XREFERENCE_DESC" />
+		<field name="version" type="text" class="readonly" readonly="true" filter="unset" size="6" label="COM_SLIDESHOW_FIELD_VERSION_LABEL" description="COM_SLIDESHOW_FIELD_VERSION_DESC" />
+		<field name="hits" type="text" class="readonly" size="6" readonly="true" filter="unset" label="JGLOBAL_HITS" description="COM_SLIDESHOW_HITS_DESC" />
 	</fieldset>
-	<fields name="params">
-		<fieldset name="jbasic" label="JGLOBAL_FIELDSET_DISPLAY_OPTIONS">
-
-		</fieldset>
-	</fields>
 	<fields name="metadata">
 		<fieldset name="jmetadata" label="JGLOBAL_FIELDSET_METADATA_OPTIONS">
-			<field name="robots" type="list" label="JFIELD_METADATA_ROBOTS_LABEL" description="JFIELD_METADATA_ROBOTS_DESC">
+			<field name="robots" type="list" labelclass="control-label" label="JFIELD_METADATA_ROBOTS_LABEL" description="JFIELD_METADATA_ROBOTS_DESC">
 				<option value="">JGLOBAL_USE_GLOBAL</option>
 				<option value="index, follow">JGLOBAL_INDEX_FOLLOW</option>
 				<option value="noindex, follow">JGLOBAL_NOINDEX_FOLLOW</option>
 				<option value="index, nofollow">JGLOBAL_INDEX_NOFOLLOW</option>
 				<option value="noindex, nofollow">JGLOBAL_NOINDEX_NOFOLLOW</option>
 			</field>
-			<field name="author" type="text" size="20" label="JAUTHOR" description="JFIELD_METADATA_AUTHOR_DESC" />
-			<field name="rights" type="text" label="JFIELD_META_RIGHTS_LABEL" description="JFIELD_META_RIGHTS_DESC" required="false" filter="string" cols="30" rows="2" />
+			<field name="author" type="text" size="20" labelclass="control-label" label="JAUTHOR" description="JFIELD_METADATA_AUTHOR_DESC" />
+			<field name="rights" type="textarea" required="false" filter="string" cols="30" rows="2" labelclass="control-label" label="JFIELD_META_RIGHTS_LABEL" description="JFIELD_META_RIGHTS_DESC" />
+		</fieldset>
+	</fields>
+	<fields name="params">
+		<fieldset name="jbasic" label="JGLOBAL_FIELDSET_DISPLAY_OPTIONS">
+			<field name="button_color" type="list" class="inputbox" size="1" default="success" filter="word" label="COM_SLIDESHOW_FIELD_BUTTON_COLOR_LABEL" description="COM_SLIDESHOW_FIELD_BUTTON_COLOR_DESC">
+				<option value="primary">COM_SLIDESHOW_OPTION_PRIMARY</option>
+				<option value="info">COM_SLIDESHOW_OPTION_INFO</option>
+				<option value="success">COM_SLIDESHOW_OPTION_SUCCESS</option>
+				<option value="warning">COM_SLIDESHOW_OPTION_WARNING</option>
+				<option value="danger">COM_SLIDESHOW_OPTION_DANGER</option>
+				<option value="inverse">COM_SLIDESHOW_OPTION_INVERSE</option>
+				<option value="link">COM_SLIDESHOW_OPTION_LINK</option>
+			</field>
+			<field name="button_size" type="list" class="inputbox" size="1" default="normal" label="COM_SLIDESHOW_FIELD_BUTTON_SIZE_LABEL" description="COM_SLIDESHOW_FIELD_BUTTON_SIZE_DESC">
+				<option value="large">COM_SLIDESHOW_OPTION_LARGE</option>
+				<option value="normal">COM_SLIDESHOW_OPTION_NORMAL</option>
+				<option value="small">COM_SLIDESHOW_OPTION_SMALL</option>
+				<option value="mini">COM_SLIDESHOW_OPTION_MINI</option>
+			</field>
+			<field name="title_color" type="color" class="span1" default="#444444" validate="color" label="COM_SLIDESHOW_FIELD_TITLE_COLOR_LABEL" description="COM_SLIDESHOW_FIELD_TITLE_COLOR_DESC" />
+			<field name="desc_color" type="color" class="span1" default="#777777" validate="color" label="COM_SLIDESHOW_FIELD_DESC_COLOR_LABEL" description="COM_SLIDESHOW_FIELD_DESC_COLOR_DESC" />
+			<field name="open_link" type="list" class="inputbox" size="1" default="_self" label="COM_SLIDESHOW_FIELD_OPEN_LINK_LABEL" description="COM_SLIDESHOW_FIELD_OPEN_LINK_DESC">
+				<option value="_self">JBROWSERTARGET_PARENT</option>
+				<option value="_blank">JBROWSERTARGET_NEW</option>
+			</field>
 		</fieldset>
 	</fields>
 </form>

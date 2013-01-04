@@ -6,63 +6,79 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-// No direct access
+// No direct access.
 defined('_JEXEC') or die;
 
 /**
- * Slideshow component helper.
+ * Slideshow helper.
  *
  * @package     Slideshow
  * @subpackage  com_slideshow
- * @since       2.5
+ * @since       3.0
  */
 class SlideshowHelper
 {
-	public static $extension = 'com_slideshow';
-
 	/**
 	 * Configure the Linkbar.
 	 *
 	 * @param   string  $vName  The name of the active view.
 	 *
 	 * @return  void
-     *
-	 * @since   2.5
+	 *
+	 * @since   3.0
 	 */
-	public static function addSubmenu($vName)
+	public static function addSubmenu($vName = 'slides')
 	{
-		JSubMenuHelper::addEntry(
+		JHtmlSidebar::addEntry(
 			JText::_('COM_SLIDESHOW_SUBMENU_SLIDES'),
 			'index.php?option=com_slideshow&view=slides',
 			$vName == 'slides'
 		);
-		JSubMenuHelper::addEntry(
+
+		JHtmlSidebar::addEntry(
 			JText::_('COM_SLIDESHOW_SUBMENU_CATEGORIES'),
 			'index.php?option=com_categories&extension=com_slideshow',
 			$vName == 'categories'
 		);
+
+		if ($vName == 'categories')
+		{
+			JToolbarHelper::title(
+				JText::sprintf('COM_CATEGORIES_CATEGORIES_TITLE', JText::_('com_slideshow')),
+				'slideshow-categories');
+		}
 	}
 
 	/**
 	 * Gets a list of the actions that can be performed.
 	 *
-	 * @return	JObject
+	 * @param   int  $categoryId  The category ID.
 	 *
-	 * @since   2.5
+	 * @return  JObject  A JObject containing the allowed actions.
+	 *
+	 * @since   3.0
 	 */
-	public static function getActions()
+	public static function getActions($categoryId = 0)
 	{
-		$user      = JFactory::getUser();
-		$result    = new JObject;
-		$assetName = 'com_slideshow';
+		$user   = JFactory::getUser();
+		$result = new JObject;
 
-		$actions = array(
-			'core.admin', 'core.manage', 'core.create', 'core.edit', 'core.edit.state', 'core.delete'
-		);
+		if (empty($categoryId))
+		{
+			$assetName = 'com_slideshow';
+			$level = 'component';
+		}
+		else
+		{
+			$assetName = 'com_slideshow.category.' . (int) $categoryId;
+			$level = 'category';
+		}
+
+		$actions = JAccess::getActions('com_slideshow', $level);
 
 		foreach ($actions as $action)
 		{
-			$result->set($action, $user->authorise($action, $assetName));
+			$result->set($action->name, $user->authorise($action->name, $assetName));
 		}
 
 		return $result;
