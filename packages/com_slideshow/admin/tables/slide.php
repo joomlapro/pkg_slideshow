@@ -27,7 +27,7 @@ class SlideshowTableSlide extends JTable
 	 */
 	public function __construct(&$db)
 	{
-		parent::__construct('#__atomtech_slideshow', 'id', $db);
+		parent::__construct('#__{4slideshow', 'id', $db);
 	}
 
 	/**
@@ -89,7 +89,7 @@ class SlideshowTableSlide extends JTable
 		}
 
 		// Check for existing title.
-		$query = 'SELECT id FROM #__atomtech_slideshow WHERE title = ' . $this->_db->Quote($this->title) . ' AND catid = ' . (int) $this->catid;
+		$query = 'SELECT id FROM #__{4slideshow WHERE title = ' . $this->_db->Quote($this->title) . ' AND catid = ' . (int) $this->catid;
 		$this->_db->setQuery($query);
 
 		$xid = (int) $this->_db->loadResult();

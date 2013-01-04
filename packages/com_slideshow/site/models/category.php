@@ -114,7 +114,7 @@ class SlideshowModelCategory extends JModelList
 
 		// Select required fields from the categories.
 		$query->select($this->getState('list.select', 'a.*'));
-		$query->from($db->quoteName('#__atomtech_slideshow') . ' AS a');
+		$query->from($db->quoteName('#__{4slideshow') . ' AS a');
 		$query->where('a.access IN (' . $groups . ')');
 
 		// Join over the categories.
