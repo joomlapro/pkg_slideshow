@@ -1,7 +1,7 @@
-Slideshow Package for Joomla! 2.5
+Slideshow Package for Joomla! 3.0
 =================================
 
-Simple component and module to register and show slides for Joomla! 2.5
+Simple component to register and show slides for Joomla! 3.0
 
 ## Installation
 
