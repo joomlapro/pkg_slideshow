@@ -30,9 +30,6 @@
 		<folder>helpers</folder>
 		<folder>models</folder>
 	</files>
-	<languages folder="site">
-		<language tag="pt-BR">language/pt-BR/pt-BR.com_slideshow.ini</language>
-	</languages>
 	<media destination="com_slideshow" folder="media">
 		<folder>css</folder>
 		<folder>images</folder>
@@ -40,13 +37,13 @@
 		<filename>index.html</filename>
 	</media>
 	<administration>
-		<menu img="../media/com_slideshow/images/menu/slideshow.png">com_slideshow</menu>
+		<menu img="class:slideshow">com_slideshow</menu>
 		<submenu>
 			<!--
 				Note that all & must be escaped to &amp; for the file to be valid
 				XML and be parsed by the installer
 			-->
-			<menu link="option=com_slideshow&amp;view=slides" view="slides" img="../media/com_slideshow/images/menu/slide.png" alt="Slideshow/Slides">com_slideshow_slides</menu>
+			<menu link="option=com_slideshow&amp;view=slides" view="slides" img="class:slides" alt="Slideshow/Slides">com_slideshow_slides</menu>
 			<menu link="option=com_categories&amp;extension=com_slideshow" view="categories" img="class:category" alt="Slideshow/Categories">com_slideshow_categories</menu>
 		</submenu>
 		<files folder="admin">
